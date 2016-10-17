@@ -6,6 +6,6 @@ a.       Part 1: The Apartment and ApartmentService base structs (C).
 
 b.       Part 2: The Yad3 System (C).
 
-c.       Scripts for Yad3 (Bash).
+c.       Part 3: Scripts for Yad3 (Bash).
 
-d.       OOP reperspective of Yad3 (C++).
+d.       Part 4: OOP reperspective of Yad3 (C++).
