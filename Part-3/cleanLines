@@ -1,0 +1,10 @@
+# Receives lines from stdin and removes empty lines and comments.
+# Used by: <line from stdin> | cleanLines
+
+#!/bin/bash
+while read line; do
+	line_to_comment=`echo "$line" | cut -d"#" -f1`
+	if [[ $line_to_comment != "" ]]; then
+		echo "$line_to_comment"
+	fi
+done

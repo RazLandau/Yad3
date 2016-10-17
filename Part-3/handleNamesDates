@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Prepares lines of text from stdin for script "sortFiles"
+# @param - Lines of text from stdin
+# Used by: <lines of text> | handleNamesDates
+
+# Function: changeDate
+# Changes date given to format YYYY.MM.DD if needed.
+# @param - Date.
+# Used by: changeDate <date>
+function changeDate {
+	year=`echo ${1} | cut -d"." -f3`
+	month=`echo ${1} | cut -d"." -f2`
+	if (( ${#month} < 2 )); then
+		month=`echo 0${month}`
+	fi
+	day=`echo ${1} | cut -d"." -f1`
+	if (( ${#day} < 2 )); then
+		day=`echo 0${day}`
+	fi
+	echo ${year}${month}${day}
+}
+
+row_num=1
+while read -a line; do
+	last=${#line[*]}
+	let last--
+	line[${last}]=$(changeDate "${line[${last}]}")
+	newLine=${line[0]}
+	for ((i = 1; i <= ${last}; i++)); do
+		multiLetterName=0
+		previous=$(( i - 1 ))
+		if [[ ${line[${i}]} = *[a-z,A-Z]* && ${line[${previous}]} = *[a-z,A-Z]* ]]; then
+				newLine=${newLine}_
+				multiLetterName=1
+		fi
+		if (( ! multiLetterName )); then
+			newLine=${newLine}" "
+		fi
+		newLine=${newLine}${line[${i}]}
+	done
+	echo ${row_num} ${newLine}
+	let row_num++
+done
+

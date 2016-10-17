@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Prints given number of relevant apartments by order of:
+# 1) Price, by ascending order.
+# 2) Dates, in descending order.
+# 3) Order in original source.
+# Identical apartments will be printed once.
+#
+# @param 1 - file.text of sources from different realtor agencies..
+# @param 2 - The city to find apartments in. If absent, default will be Haifa.
+# @param 3 - Number of apartments to be printed. If absent, default will be 1.
+#
+# @return
+# Prints to stdout:
+# "Illegal or missing parameters" if number of parameters given isn't 1 or 3.
+# "File is missing" if sources file doesn't exist in current directory.
+# Otherwise, ordered list of limit number of relevant apartments.
+#
+# Used By: getApartments <source file> <city> <limit>
+
+num_of_args=$#
+if (( num_of_args != 1 && num_of_args != 3 )); then
+	echo "Illegal or missing parameters"
+	exit 
+fi
+
+file="$1"
+city=`echo $2`
+city="${city// /_}"
+limit=$3
+if [[ ! -f "$file" ]]; then
+	echo "File is missing"
+	exit
+fi
+if (( num_of_args == 1 )); then
+	city=haifa
+	limit=1
+fi
+
+cat "$file" | cleanLines | findFiles | cleanLines | handleNamesDates | grep -iw "$city" | sortFile ${limit}

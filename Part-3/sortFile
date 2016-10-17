@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Sort lines of text from stdin by:
+# 1) Price, by ascending order.
+# 2) Dates, in descending order.
+# 3) Order in original source.
+# Identical apartments will be printed once.
+# @param - Lines from stdin
+# Used by: <lines from stdin> | sortFile
+
+sort -k2 | uniq -i1 | sort -n | sort -nsk6 | uniq -i | head -n+$1 | sort -nsrk8 | cut -d" " -f5-7

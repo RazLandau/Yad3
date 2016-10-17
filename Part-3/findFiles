@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Reads a list of sources from stdin in separate lines
+# and prints to stdout the content only for sources that end with ".flat".
+# @param - List of sources from stdin in separate lines.
+# Used by: <lines from stdin> | findFiles
+
+while read source; do
+  if [[ "$source" != *\.flat ]]; then
+	continue
+  fi
+  if [[ -f "$source" ]]; then
+	cat "$source"
+  fi
+  if [[ -d "$source" ]]; then
+	ls -d -1 "$source"/* | findFiles
+  fi
+done
